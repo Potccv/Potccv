@@ -12,10 +12,12 @@
 
 | 任务 | 执行要求 |
 |---|---|
-| 启动项目、准备工作区、开发与测试、demo 交付 | [开发协作](rules/dev/AGENTS.md#按任务读取) |
-| 连接环境、消息任务 | [环境与消息](rules/dev/AGENTS.md#环境与消息) |
+| 启动项目、准备工作区、生成开发测试文件 | [工作区布局](rules/workspace/AGENTS.md) |
+| 编写或修改源码、开展验证或测试、清理测试临时文件 | [工作区布局](rules/workspace/AGENTS.md)、[测试与验证](rules/testing/AGENTS.md) |
+| 用户要求生成 demo | [demo 交付](rules/demo/AGENTS.md) |
+| 连接环境、消息任务 | [环境连接与消息](rules/communication/AGENTS.md) |
 | 版本确认、配置签名、提交与推送 | [版本与提交](rules/git/AGENTS.md) |
-| 编写文档、保存项目资料、记录状态 | [文档与资料](rules/dev/doc/AGENTS.md) |
+| 编写文档、保存项目资料、记录状态 | [文档与资料](rules/docs/AGENTS.md) |
 | 需要个人环境参数或维护配置 | [个人配置](profile/AGENTS.md#按任务读取) |
 
 ## 操作与授权
@@ -25,10 +27,10 @@
 
 ## 维护本项目
 
-本节仅适用于 Potccv，其文档分工优先于[通用文档规则](rules/dev/doc/AGENTS.md#文档职责)。
+本节仅适用于 Potccv，其文档分工优先于[通用文档规则](rules/docs/AGENTS.md#文档职责)。
 
 - 仓库根目录（第 1 层）及其直接下属的公开资料目录（第 2 层）同时维护 AGENTS.md 与 README.md；更深的公开资料目录默认只维护 AGENTS.md。
 - 深层目录需要独立的人类阅读入口（例如独立工具或模块）时，可按需增加 README.md；上层 README 提供直达相应 AGENTS 或 README 的导航。
 - 本仓库的执行规则、配置语义和操作步骤在所属 AGENTS 中完整维护；README 仅面向人介绍用途和提供导航，AI 执行不依赖 README。
-- 维护任何文档前，阅读[文档与资料要求](rules/dev/doc/AGENTS.md)。
+- 维护任何文档前，阅读[文档与资料要求](rules/docs/AGENTS.md)。
 - 修改 `rules/` 前阅读 [rules/AGENTS.md](rules/AGENTS.md)，并继续读取目标目录的 AGENTS；修改 `profile/` 或其忽略规则前阅读 [profile/AGENTS.md](profile/AGENTS.md)。

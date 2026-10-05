@@ -46,7 +46,7 @@ if (-not (Test-Path -LiteralPath './profile/local.json')) {
 | `preferences` | 默认测试主机别名、消息图片发送方式等个人设置 |
 | `hosts`、`devices`、`services` | 设备地址、服务入口、连接方式及设备允许操作的范围，可附最后核验日期 |
 | `contacts` | 消息任务需要的联系人标识 |
-| `project_locations` | 项目工作区与资料目录的定位路径，仅作入口索引，不承载完整项目资料；资料位置遵循[资料存放位置](../rules/dev/doc/AGENTS.md#资料存放位置) |
+| `project_locations` | 项目工作区与资料目录的定位路径，仅作入口索引，不承载完整项目资料；资料位置遵循[资料存放位置](../rules/docs/AGENTS.md#资料存放位置) |
 
 ## 凭据与发布
 
