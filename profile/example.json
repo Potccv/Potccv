@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "identity": {
+    "display_name": ""
+  },
+  "paths": {
+    "workspace_root": "",
+    "ssh_private_key": "",
+    "ssh_signing_public_key": "",
+    "ssh_allowed_signers": ""
+  },
+  "credentials": {
+    "file": "",
+    "values": {}
+  },
+  "preferences": {
+    "default_test_host": "",
+    "image_message_format": ""
+  },
+  "hosts": {},
+  "devices": {},
+  "services": {},
+  "contacts": {},
+  "project_locations": {}
+}

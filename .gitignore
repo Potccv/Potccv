@@ -1,0 +1,16 @@
+# The profile directory publishes README, agent instructions, and an empty example only.
+/profile/*
+!/profile/README.md
+!/profile/AGENTS.md
+!/profile/example.json
+
+# Optional personal configurations elsewhere in this repository.
+*.local.*
+.env
+.env.*
+!.env.example
+
+# Editor and temporary copies.
+*.bak
+*.tmp
+*~

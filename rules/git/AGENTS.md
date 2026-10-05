@@ -1,0 +1,32 @@
+# AGENTS.md — 版本与提交
+
+使用本资料处理版本、签名、提交或推送时，遵循本文件及[根目录执行要求](../../AGENTS.md)。维护本目录文档时，同时遵循[通用约定文档的维护要求](../AGENTS.md)。
+
+## 版本与授权
+
+- 默认在代码开发完成后，先确认版本号及是否提交，不擅自更改版本或提交代码。
+- 项目已有的持续授权及版本约定以项目自身资料为准；历史单次授权不自动推广到未来任务或其他仓库。
+
+## 签名配置
+
+GitHub 认证与 SSH 签名路径按[个人配置要求](../../profile/AGENTS.md)读取。使用已登记的 SSH 公钥进行签名，Git 配置如下：
+
+| 配置项 | 值或来源 |
+|---|---|
+| `gpg.format` | `ssh` |
+| `user.signingkey` | 本机配置中的 SSH 签名公钥路径 |
+| `commit.gpgsign` | `true` |
+| `gpg.ssh.allowedSignersFile` | 本机配置中的签名者列表文件路径 |
+
+## 提交与核验步骤
+
+1. 使用 `git diff --cached` 和 `git diff --cached --name-only` 检查暂存内容及文件清单，只纳入应发布内容；个人配置的限制见[凭据与发布要求](../../profile/AGENTS.md#凭据与发布)。
+2. 使用 `git commit -S -m "提交说明"` 创建签名提交。
+3. 使用 `git verify-commit HEAD` 核验最近一次提交；核验其他提交时将 `HEAD` 替换为对应提交 ID。
+4. 推送至 GitHub 后，核对该提交的 `Verified` 状态及 `verification.reason=valid`。
+
+## 补签与推送
+
+`git commit --amend --no-edit -S` 用于补签最近一次提交，会改变提交 ID；使用前确认操作处于当前任务授权范围。
+
+推送远端和分支以项目实际配置为准。SSH remote 不可用时，可使用 HTTPS 与本机凭据。
