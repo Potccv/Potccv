@@ -26,7 +26,8 @@
 
 本节仅适用于 Potccv，其文档分工优先于[通用文档规则](rules/dev/doc/AGENTS.md#文档职责)。
 
-- 根目录和各公开资料目录必须同时维护 AGENTS.md 与 README.md；新增公开资料目录时一并创建这两份文件。
+- 仓库根目录（第 1 层）及其直接下属的公开资料目录（第 2 层）同时维护 AGENTS.md 与 README.md；更深的公开资料目录默认只维护 AGENTS.md。
+- 深层目录需要独立的人类阅读入口（例如独立工具或模块）时，可按需增加 README.md；上层 README 提供直达相应 AGENTS 或 README 的导航。
 - 本仓库的执行规则、配置语义和操作步骤在所属 AGENTS 中完整维护；README 仅面向人介绍用途和提供导航，AI 执行不依赖 README。
 - 维护任何文档前，阅读[文档与资料要求](rules/dev/doc/AGENTS.md)。
 - 修改 `rules/` 前阅读 [rules/AGENTS.md](rules/AGENTS.md)，并继续读取目标目录的 AGENTS；修改 `profile/` 或其忽略规则前阅读 [profile/AGENTS.md](profile/AGENTS.md)。
