@@ -4,7 +4,7 @@
 
 | 入口 | 内容 |
 |---|---|
-| [工作区布局](workspace/AGENTS.md) | 发布内容与开发测试资料的存放位置 |
+| [工作区布局](workspace/AGENTS.md) | 发布内容、开发测试资料与参考项目源码的存放位置 |
 | [编程规范](coding/AGENTS.md) | 编程基本原则、修改范围与子智能体协作 |
 | [测试与验证](testing/AGENTS.md) | 测试时机、验证协作、测试临时目录的命名与清理 |
 | [demo 交付](demo/AGENTS.md) | demo 范围、产物位置与运行说明 |

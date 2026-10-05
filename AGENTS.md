@@ -12,7 +12,7 @@
 
 | 任务 | 执行要求 |
 |---|---|
-| 启动项目、准备工作区、生成开发测试文件 | [工作区布局](rules/workspace/AGENTS.md) |
+| 启动项目、准备工作区、生成开发测试文件或参考其他仓库与项目 | [工作区布局](rules/workspace/AGENTS.md) |
 | 编写或修改源码 | [工作区布局](rules/workspace/AGENTS.md)、[编程规范](rules/coding/AGENTS.md)、[测试与验证](rules/testing/AGENTS.md) |
 | 开展验证或测试、清理测试临时文件 | [工作区布局](rules/workspace/AGENTS.md)、[测试与验证](rules/testing/AGENTS.md) |
 | 用户要求生成 demo | [demo 交付](rules/demo/AGENTS.md) |
@@ -25,6 +25,7 @@
 
 - 修改正在运行的项目代码前，应取得明确授权，并遵守已有授权范围。设备可发现、可连接或出现在配置中，不代表自动获得操作许可。
 - 消息任务的发送范围由当前任务授权决定。
+- 每次修改完成后的提交与推送按[版本与授权](rules/git/AGENTS.md#版本与授权)执行。
 
 ## 维护本项目
 
