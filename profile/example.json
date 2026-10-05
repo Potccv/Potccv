@@ -15,8 +15,11 @@
   },
   "preferences": {
     "auto_commit_and_push": false,
-    "default_test_host": "",
-    "image_message_format": ""
+    "subagents": {
+      "count": 3,
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "high"
+    }
   },
   "hosts": {},
   "devices": {},
