@@ -13,10 +13,16 @@
 | 任务 | 执行要求 |
 |---|---|
 | 启动项目、准备工作区、生成开发测试文件 | [工作区布局](rules/workspace/AGENTS.md) |
-| 编写或修改源码、开展验证或测试、清理测试临时文件 | [工作区布局](rules/workspace/AGENTS.md)、[测试与验证](rules/testing/AGENTS.md) |
+| 明确需求、设计模块、编写或重构源码 | [工作区布局](rules/workspace/AGENTS.md)、[编程与设计](rules/coding/AGENTS.md)、[测试与验证](rules/testing/AGENTS.md) |
+| 设计或修改公共接口、API、消息或外部集成 | [接口与集成](rules/interfaces/AGENTS.md) |
+| 设计数据模型、事务、缓存或数据迁移 | [数据与存储](rules/data/AGENTS.md) |
+| 处理身份、权限、不可信输入或敏感数据 | [安全与隐私](rules/security/AGENTS.md) |
+| 选择或更新依赖、修改构建或持续集成 | [依赖与构建](rules/dependencies/AGENTS.md) |
+| 调整运行配置、日志、性能或执行发布与恢复 | [运行与发布](rules/operations/AGENTS.md) |
+| 开展验证或测试、清理测试临时文件 | [工作区布局](rules/workspace/AGENTS.md)、[测试与验证](rules/testing/AGENTS.md) |
 | 用户要求生成 demo | [demo 交付](rules/demo/AGENTS.md) |
 | 连接环境、消息任务 | [环境连接与消息](rules/communication/AGENTS.md) |
-| 版本确认、配置签名、提交与推送 | [版本与提交](rules/git/AGENTS.md) |
+| 组织变更、代码评审、版本确认、配置签名、提交与推送 | [版本与提交](rules/git/AGENTS.md) |
 | 编写文档、保存项目资料、记录状态 | [文档与资料](rules/docs/AGENTS.md) |
 | 需要个人环境参数或维护配置 | [个人配置](profile/AGENTS.md#按任务读取) |
 
