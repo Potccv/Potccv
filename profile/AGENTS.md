@@ -45,7 +45,7 @@ if (-not (Test-Path -LiteralPath './profile/local.json')) {
 | `credentials.values` | 选择直接在个人配置中保存的凭据；与 `credentials.file` 二选一，不混用 |
 | `preferences` | 提交偏好与子智能体默认参数 |
 | `preferences.auto_commit_and_push` | 修改完成后是否自动提交并推送至 GitHub；布尔值，默认 `false`，缺失时按 `false` 处理，执行规则见[版本与授权](../rules/git/AGENTS.md#版本与授权) |
-| `preferences.subagents` | 子智能体默认参数：`count` 为正整数数量（不含主智能体），`model` 为模型标识，`reasoning_effort` 为推理强度；缺失字段采用[配置示例](example.json)中的相应默认值 |
+| `preferences.subagents` | 子智能体默认参数：`count` 为当前任务要求同时运行的子智能体数量，取正整数且不含主智能体；`model`、`reasoning_effort` 分别为每个子智能体必须使用的模型标识与推理强度；缺失字段采用[配置示例](example.json)中的相应默认值，计数与复用按[子智能体协作](../rules/coding/AGENTS.md#子智能体协作)执行 |
 | `hosts`、`devices`、`services` | 设备地址、服务入口、连接方式及设备允许操作的范围，可附最后核验日期 |
 | `contacts` | 消息任务需要的联系人标识 |
 | `project_locations` | 项目工作区与资料目录的定位路径，仅作入口索引，不承载完整项目资料；资料位置遵循[资料存放位置](../rules/docs/AGENTS.md#资料存放位置) |
