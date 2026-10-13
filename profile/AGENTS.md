@@ -48,7 +48,7 @@ if (-not (Test-Path -LiteralPath './profile/local.json')) {
 | `preferences.subagents` | 子智能体默认参数：`count` 为当前任务的目标并发数量，取正整数且不含主智能体，工作不足时的调度、计数与复用按[子智能体协作](../rules/coding/AGENTS.md#子智能体协作)执行；`model`、`reasoning_effort` 分别为每个子智能体必须使用的模型标识与推理强度；缺失字段采用[配置示例](example.json)中的相应默认值 |
 | `hosts`、`devices`、`services` | 设备地址、服务入口、连接方式及设备允许操作的范围，可附最后核验日期 |
 | `contacts` | 消息任务需要的联系人标识 |
-| `project_locations` | 项目工作区与资料目录的定位路径，仅作入口索引，不承载完整项目资料；资料位置遵循[资料存放位置](../rules/docs/AGENTS.md#资料存放位置) |
+| `project_locations` | 项目工作区与资料目录的定位路径，仅作入口索引，不承载完整项目资料；工作区资料位置遵循[工作区资料存放位置](../rules/docs/workspace/AGENTS.md#资料存放位置) |
 
 ## 凭据与发布
 
