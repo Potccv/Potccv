@@ -18,10 +18,11 @@ from .paths import is_redirect, is_within
 
 
 _TASK_NAME = re.compile(r"^(?P<id>(?:[A-Za-z][A-Za-z0-9]*?-?\d+|\d+))[-－—_ ]+(?P<name>.+)$")
-_METADATA = re.compile(r"^(状态|创建时间|最后更新时间|完成时间|终止时间|终止原因)\s*[：:]\s*(.*?)\s*$")
+_METADATA = re.compile(r"^(状态|摘要|创建时间|最后更新时间|完成时间|终止时间|终止原因)\s*[：:]\s*(.*?)\s*$")
 _DATE = re.compile(r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$")
-_SECTIONS = ("目标", "变更边界", "拆分依据", "工作清单", "验收条件", "当前进展与接续", "关联资料")
+_SECTIONS = ("变更边界", "工作清单", "验收条件", "当前进展与接续")
 _STATES = ("todo", "done", "drop")
+_SUMMARY_LIMIT = 120
 _LEGACY_STATE_NAMES = {
     "待办", "待办事项", "完成", "完成事项", "已完成", "终止", "终止事项", "已终止",
     "TODO", "DONE", "DROP",
@@ -220,6 +221,11 @@ def _check_document(path: Path, state: str, result: CheckResult) -> None:
     else:
         if statuses[0][0] != state:
             result.add("tasks.status", f"状态必须与目录名 {state} 完全一致。", path, statuses[0][1])
+    summaries = metadata.get("摘要", [])
+    if not summaries or not summaries[0][0].strip():
+        result.add("tasks.summary", "事项必须有一行非空摘要，用于快速识别变更结果。", path)
+    elif len(summaries[0][0]) > _SUMMARY_LIMIT:
+        result.add("tasks.summary", f"摘要不能超过 {_SUMMARY_LIMIT} 个字符。", path, summaries[0][1])
     footer = ["创建时间", "最后更新时间"]
     if state == "todo":
         forbidden = ("完成时间", "终止时间")

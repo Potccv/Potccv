@@ -11,6 +11,7 @@ from tests.support import temporary_directory
 def task_text(status="todo", creation="2026-10-01 12:00:00", update="2026-10-02 12:00:00", *, completion=None, termination=None, reason=None, extra=""):
     text = (
         "# 独立事项\n\n状态：" + status + "\n\n"
+        "摘要：完成独立事项的验证。\n\n"
         "## 目标\n预期结果。\n\n## 变更边界\n仅包含本事项结果。\n\n"
         "## 拆分依据\n可独立验收：是；可独立迁移：是；失败时其他事项仍有价值：是。\n\n"
         "## 工作清单\n- [ ] 实施步骤。\n\n"
@@ -86,6 +87,13 @@ class TaskChecks(unittest.TestCase):
         self.write(self.todo, text=task_text("进行中"))
         self.write(self.done, "T002-错误.md", task_text("DONE", completion="2026-10-02 12:00:00"))
         self.assertIn("tasks.status", self.codes(self.check()))
+
+    def test_summary_is_required_and_bounded(self):
+        self.write(self.todo, text=task_text().replace("摘要：完成独立事项的验证。\n\n", ""))
+        self.assertIn("tasks.summary", self.codes(self.check()))
+        long_summary = "摘要：" + "字" * 121 + "\n\n"
+        self.write(self.todo, "T002-过长摘要.md", text=task_text().replace("摘要：完成独立事项的验证。\n\n", long_summary))
+        self.assertIn("tasks.summary", self.codes(self.check()))
 
     def test_old_or_wrong_case_state_directory_is_error_without_reading(self):
         self.todo.rmdir(); self.done.rmdir(); self.drop.rmdir()

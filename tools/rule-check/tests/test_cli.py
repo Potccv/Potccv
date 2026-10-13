@@ -15,6 +15,7 @@ TOOL = Path(__file__).resolve().parents[1] / "rule_check.py"
 VALID_TASK = """# 独立校验工具
 
 状态：todo
+摘要：验证事项检查命令保持只读。
 
 ## 目标
 确认命令行检查只读。
