@@ -20,7 +20,7 @@
 | 开展验证或测试、清理测试临时文件 | [工作区布局](rules/workspace/AGENTS.md)、[测试与验证](rules/testing/AGENTS.md) |
 | 用户要求生成 demo | [demo 交付](rules/demo/AGENTS.md) |
 | 版本确认、配置签名、提交与推送 | [版本与提交](rules/git/AGENTS.md) |
-| 编写文档、保存项目资料、记录状态或说明交付结果 | [文档与资料](rules/docs/AGENTS.md) |
+| 编写文档、保存项目资料、记录状态、交接待办或说明交付结果 | [文档与资料](rules/docs/AGENTS.md) |
 | 连接设备、需要个人环境参数或维护配置 | [个人配置](profile/AGENTS.md#按任务读取) |
 
 ## 操作与授权
