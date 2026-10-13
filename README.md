@@ -9,3 +9,4 @@ Potccv 整理了 AI 协作时会用到的开发、Git、文档和个人配置资
 | [AGENTS.md](AGENTS.md) | 面向 agent 的任务入口、执行约束和维护要求 |
 | [通用约定](rules/README.md) | 按源码仓库与工作区两个作用范围组织的约束入口 |
 | [个人配置](profile/README.md) | 配置模板及其使用规范的导读 |
+| [规则校验工具](tools/rule-check/README.md) | 只读检查源码仓库规则和工作区事项 |

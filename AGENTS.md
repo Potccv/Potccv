@@ -2,7 +2,7 @@
 
 本仓库维护供 AI 使用的跨项目协作约定和个人配置示例，本文件是执行入口。在其他项目中引用本资料时，同时遵循所属项目的实际约定。
 
-本仓库由 Markdown 文档和 JSON 配置示例组成，无需安装依赖或执行构建。
+本仓库主要维护 Markdown 文档和 JSON 配置示例；`tools/rule-check/` 是随仓库发布、可独立运行的 Python 只读工具，依赖和运行方式见其 README，不属于主仓库的构建步骤。
 
 ## 开始任务
 
@@ -24,6 +24,7 @@
 | 版本确认、配置签名、提交与推送 | [版本与提交](rules/repo/git/AGENTS.md) |
 | 维护工作区的本机开发说明、事项进度、交接与验收记录 | [工作区开发文档](rules/workspace/docs/AGENTS.md) |
 | 维护源码仓库内的 README、模块说明、接口、使用文档或 AGENTS | [源码仓库文档](rules/repo/docs/AGENTS.md) |
+| 维护源码仓库内的独立 `rule-check` 工具 | [工具约定](tools/rule-check/AGENTS.md) |
 | 说明交付结果 | [交付说明](rules/AGENTS.md#交付说明) |
 | 连接设备、需要个人环境参数或维护配置 | [个人配置](profile/AGENTS.md#按任务读取) |
 

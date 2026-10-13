@@ -14,3 +14,10 @@
 *.bak
 *.tmp
 *~
+
+# Local rule-check environments, caches, test batches, and reports.
+/tools/rule-check/venv/
+/tools/rule-check/.venv/
+/build/
+/tmp/
+/artifacts/
