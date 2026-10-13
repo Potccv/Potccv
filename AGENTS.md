@@ -21,7 +21,7 @@
 | 编写或运行本机辅助工具 | [工作区约定](rules/workspace/AGENTS.md)、[本机开发工具](rules/workspace/tools/AGENTS.md) |
 | 开展验证或测试、清理测试临时文件 | [工作区约定](rules/workspace/AGENTS.md)、[测试执行与验证](rules/workspace/testing/AGENTS.md) |
 | 用户要求生成 demo | [demo 交付](rules/repo/demo/AGENTS.md) |
-| 版本确认、配置签名、提交与推送 | [版本与提交](rules/repo/git/AGENTS.md) |
+| 版本确认、发布、配置签名、提交与推送 | [版本与发布](rules/repo/git/AGENTS.md) |
 | 维护工作区的本机开发说明、事项进度、交接与验收记录 | [工作区开发文档](rules/workspace/docs/AGENTS.md) |
 | 维护源码仓库内的 README、模块说明、接口、使用文档或 AGENTS | [源码仓库文档](rules/repo/docs/AGENTS.md) |
 | 维护源码仓库内的独立 `rule-check` 工具 | [工具约定](tools/rule-check/AGENTS.md) |
@@ -33,7 +33,7 @@
 - 修改正在运行的项目代码前，应取得明确授权，并遵守已有授权范围。设备可发现、可连接或出现在配置中，不代表自动获得操作许可。
 - 消息任务的发送范围由当前任务授权决定。
 - 操作失败或需要重试时，按[操作失败与重试](rules/workspace/AGENTS.md#操作失败与重试)执行。
-- 每次修改完成后的提交与推送按[版本与授权](rules/repo/git/AGENTS.md#版本与授权)执行。
+- 每次修改完成后的发布整理、提交与推送按[版本与授权](rules/repo/git/AGENTS.md#版本与授权)执行；发布整理的收尾要求和无构建时的限制见[发布整理与源码仓库发布目录](rules/repo/git/AGENTS.md#发布整理与源码仓库发布目录)。
 
 ## 维护本项目
 

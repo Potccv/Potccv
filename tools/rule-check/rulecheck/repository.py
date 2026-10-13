@@ -63,6 +63,7 @@ def _check_example(repo: Path, tracked: set[str], result: CheckResult) -> None:
         "credentials": {"file": str, "values": dict},
         "preferences": {
             "auto_commit_and_push": bool,
+            "release": {"create_after_change": bool, "auto_push": bool, "retain_count": int},
             "subagents": {"count": int, "model": str, "reasoning_effort": str},
         },
         **{key: dict for key in ("hosts", "devices", "services", "contacts", "project_locations")},
@@ -86,6 +87,15 @@ def _check_example(repo: Path, tracked: set[str], result: CheckResult) -> None:
         elif field == "preferences.auto_commit_and_push":
             if value:
                 result.add("profile_example_default", "The public example must default automatic commit to false.", relative)
+        elif field == "preferences.release.create_after_change":
+            if not value:
+                result.add("profile_example_default", "The public example must default release generation to true.", relative)
+        elif field == "preferences.release.auto_push":
+            if value:
+                result.add("profile_example_default", "The public example must default release push to false.", relative)
+        elif field == "preferences.release.retain_count":
+            if value < 1:
+                result.add("profile_example_default", "The release retention count must be a positive integer.", relative)
         elif field == "preferences.subagents.count":
             if value < 1:
                 result.add("profile_example_default", "The subagent count must be a positive integer.", relative)
