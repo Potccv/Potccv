@@ -1,6 +1,6 @@
 # AGENTS.md — 源码仓库文档
 
-先按[文档位置与适用范围](../AGENTS.md#文档位置与适用范围)确认归属。本文件适用于 `<源码仓库>/docs/`，以及源码仓库内的 README.md、CONTRIBUTING.md、模块就近说明和相关 AGENTS.md；共同写作与验证要求见[文档与资料](../AGENTS.md)。
+先按[文档位置与适用范围](../../AGENTS.md#文档位置与适用范围)确认归属。本文件适用于 `<源码仓库>/docs/`，以及源码仓库内的 README.md、CONTRIBUTING.md、模块就近说明和相关 AGENTS.md；共同写作与验证要求见[共同写作与核对](../../AGENTS.md#共同写作与核对)。
 
 ## 文档职责
 
