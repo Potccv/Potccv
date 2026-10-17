@@ -75,7 +75,9 @@ class CliTests(unittest.TestCase):
 
     def task_for_state(self, state: str) -> str:
         text = VALID_TASK
-        if state == "done":
+        if state == "doing":
+            text = text.replace("状态：todo", "状态：doing").replace("最后更新时间：2026-10-13 20:01:00", "最后更新时间：2026-10-13 20:02:00")
+        elif state == "done":
             text = text.replace("状态：todo", "状态：done").replace("最后更新时间：2026-10-13 20:01:00", "最后更新时间：2026-10-13 20:02:00")
             text += "完成时间：2026-10-13 20:02:00\n"
         elif state == "drop":
@@ -159,7 +161,7 @@ class CliTests(unittest.TestCase):
             self.assertFalse((root / "docs").exists())
 
     def test_single_task_state_directory_does_not_create_other_states(self):
-        for state in ("todo", "done", "drop"):
+        for state in ("todo", "doing", "done", "drop"):
             with self.subTest(state=state), temporary_directory() as folder:
                 root = Path(folder)
                 source = root / "source"
@@ -174,11 +176,11 @@ class CliTests(unittest.TestCase):
                 payload = json.loads(completed.stdout)
                 self.assertTrue(payload["ok"])
                 self.assertEqual(payload["stats"]["task_files"], 1)
-                for other in {"todo", "done", "drop"} - {state}:
+                for other in {"todo", "doing", "done", "drop"} - {state}:
                     self.assertFalse((target / other).exists())
 
     def test_legacy_or_wrong_case_state_directories_are_rejected_without_reading_body(self):
-        for state in ("待办事项", "Todo", "TODO", "Done", "DONE", "Drop", "DROP"):
+        for state in ("待办事项", "进行中", "Doing", "DOING", "Todo", "TODO", "Done", "DONE", "Drop", "DROP"):
             with self.subTest(state=state), temporary_directory() as folder:
                 root = Path(folder)
                 source = root / "source"

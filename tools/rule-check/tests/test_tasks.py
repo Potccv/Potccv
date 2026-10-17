@@ -1,4 +1,4 @@
-"""Synthetic fixtures for strict todo/done/drop task records."""
+"""Synthetic fixtures for strict todo/doing/done/drop task records."""
 
 from pathlib import Path
 import unittest
@@ -37,9 +37,10 @@ class TaskChecks(unittest.TestCase):
         self.source.mkdir()
         self.target = self.workspace / "docs" / "tasks"
         self.todo = self.target / "todo"
+        self.doing = self.target / "doing"
         self.done = self.target / "done"
         self.drop = self.target / "drop"
-        for directory in (self.todo, self.done, self.drop):
+        for directory in (self.todo, self.doing, self.done, self.drop):
             directory.mkdir(parents=True)
 
     def write(self, directory, name="T001-独立事项.md", text=None):
@@ -65,6 +66,16 @@ class TaskChecks(unittest.TestCase):
         self.assertTrue(result.ok, result.issues)
         self.assertEqual(result.stats["task_files"], 3)
 
+    def test_valid_doing_uses_two_time_lines(self):
+        self.write(self.doing, text=task_text("doing"))
+        result = self.check()
+        self.assertTrue(result.ok, result.issues)
+        self.assertEqual(result.stats["task_files"], 1)
+
+    def test_doing_rejects_completion_or_termination(self):
+        self.write(self.doing, text=task_text("doing", completion="2026-10-02 12:00:00", termination="2026-10-02 12:00:00"))
+        self.assertIn("tasks.forbidden_time", self.codes(self.check()))
+
     def test_drop_requires_reason(self):
         self.write(self.drop, text=task_text("drop", termination="2026-10-02 12:00:00"))
         self.assertTrue({"tasks.termination_reason"} <= self.codes(self.check()))
@@ -85,6 +96,7 @@ class TaskChecks(unittest.TestCase):
 
     def test_status_must_match_directory_exactly(self):
         self.write(self.todo, text=task_text("进行中"))
+        self.write(self.todo, "T003-错误状态.md", text=task_text("doing"))
         self.write(self.done, "T002-错误.md", task_text("DONE", completion="2026-10-02 12:00:00"))
         self.assertIn("tasks.status", self.codes(self.check()))
 
@@ -96,8 +108,8 @@ class TaskChecks(unittest.TestCase):
         self.assertIn("tasks.summary", self.codes(self.check()))
 
     def test_old_or_wrong_case_state_directory_is_error_without_reading(self):
-        self.todo.rmdir(); self.done.rmdir(); self.drop.rmdir()
-        for invalid in ("待办事项", "Todo", "TODO", "Done", "DONE", "Drop", "DROP"):
+        self.todo.rmdir(); self.doing.rmdir(); self.done.rmdir(); self.drop.rmdir()
+        for invalid in ("待办事项", "进行中", "Doing", "DOING", "Todo", "TODO", "Done", "DONE", "Drop", "DROP"):
             with self.subTest(invalid=invalid):
                 old = self.target / invalid
                 old.mkdir()
@@ -110,7 +122,7 @@ class TaskChecks(unittest.TestCase):
                 old.rmdir()
 
     def test_wrong_case_english_directory_is_error(self):
-        self.todo.rmdir(); self.done.rmdir(); self.drop.rmdir()
+        self.todo.rmdir(); self.doing.rmdir(); self.done.rmdir(); self.drop.rmdir()
         (self.target / "TODO").mkdir()
         self.assertIn("tasks.state_name", self.codes(self.check()))
 
@@ -127,16 +139,16 @@ class TaskChecks(unittest.TestCase):
         self.assertIn("tasks.duplicate_id", self.codes(self.check()))
 
     def test_missing_state_directories_are_skipped_without_creation(self):
-        self.todo.rmdir(); self.done.rmdir(); self.drop.rmdir()
+        self.todo.rmdir(); self.doing.rmdir(); self.done.rmdir(); self.drop.rmdir()
         before = self.snapshot()
         with patch.object(Path, "mkdir", side_effect=AssertionError("must not mkdir")):
             result = self.check()
         self.assertTrue(result.ok, result.issues)
-        self.assertEqual(result.stats["task_directories_skipped"], 3)
+        self.assertEqual(result.stats["task_directories_skipped"], 4)
         self.assertEqual(self.snapshot(), before)
 
     def test_default_tasks_missing_is_normal_skip_and_explicit_missing_errors(self):
-        for directory in (self.todo, self.done, self.drop): directory.rmdir()
+        for directory in (self.todo, self.doing, self.done, self.drop): directory.rmdir()
         self.target.rmdir(); self.target.parent.rmdir()
         result = self.check()
         self.assertTrue(result.ok)

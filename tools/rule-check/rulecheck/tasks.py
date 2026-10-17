@@ -21,10 +21,10 @@ _TASK_NAME = re.compile(r"^(?P<id>(?:[A-Za-z][A-Za-z0-9]*?-?\d+|\d+))[-－—_ ]
 _METADATA = re.compile(r"^(状态|摘要|创建时间|最后更新时间|完成时间|终止时间|终止原因)\s*[：:]\s*(.*?)\s*$")
 _DATE = re.compile(r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$")
 _SECTIONS = ("变更边界", "工作清单", "验收条件", "当前进展与接续")
-_STATES = ("todo", "done", "drop")
+_STATES = ("todo", "doing", "done", "drop")
 _SUMMARY_LIMIT = 120
 _LEGACY_STATE_NAMES = {
-    "待办", "待办事项", "完成", "完成事项", "已完成", "终止", "终止事项", "已终止",
+    "待办", "待办事项", "完成", "完成事项", "已完成", "终止", "终止事项", "已终止", "进行中",
     "TODO", "DONE", "DROP",
 }
 
@@ -153,7 +153,7 @@ def _task_files(
 
 
 def _state_directories(target: Path, result: CheckResult):
-    """Return exact-case todo/done/drop entries without opening other dirs."""
+    """Return exact-case todo/doing/done/drop entries without opening other dirs."""
     try:
         entries = list(target.iterdir())
     except OSError as exc:
@@ -166,7 +166,7 @@ def _state_directories(target: Path, result: CheckResult):
             continue
         folded = entry.name.casefold()
         if folded in {name.casefold() for name in _STATES} or entry.name in _LEGACY_STATE_NAMES:
-            result.add("tasks.state_name", "事项状态目录必须精确命名为 todo、done 或 drop；旧名称或大小写错误不会被读取。", entry)
+            result.add("tasks.state_name", "事项状态目录必须精确命名为 todo、doing、done 或 drop；旧名称或大小写错误不会被读取。", entry)
     return found
 
 
@@ -227,7 +227,7 @@ def _check_document(path: Path, state: str, result: CheckResult) -> None:
     elif len(summaries[0][0]) > _SUMMARY_LIMIT:
         result.add("tasks.summary", f"摘要不能超过 {_SUMMARY_LIMIT} 个字符。", path, summaries[0][1])
     footer = ["创建时间", "最后更新时间"]
-    if state == "todo":
+    if state in ("todo", "doing"):
         forbidden = ("完成时间", "终止时间")
     elif state == "done":
         footer.append("完成时间")
