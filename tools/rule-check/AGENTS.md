@@ -2,10 +2,10 @@
 
 `rule-check` 是本源码仓库随源码发布的独立 Python 只读工具，入口和依赖见本目录的 [README.md](README.md)。本文件只记录该工具特有的边界；源码编程、源码测试、源码文档和工作区测试的通用要求分别按仓库规则执行：
 
-- [编程规范](../../rules/repo/coding/AGENTS.md)
-- [源码测试与依赖](../../rules/repo/testing/AGENTS.md)
-- [源码仓库文档](../../rules/repo/docs/AGENTS.md)
-- [工作区测试与验证](../../rules/workspace/testing/AGENTS.md)
+- [编程规范](../../rules/repo/coding.md)
+- [源码测试与依赖](../../rules/repo/testing.md)
+- [源码仓库文档](../../rules/repo/docs.md)
+- [工作区测试与验证](../../rules/workspace/testing/execution.md)
 
 ## 工具边界
 

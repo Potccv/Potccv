@@ -2,7 +2,7 @@
 
 `rule-check` 是随 Potccv 源码仓库发布的独立 Python 只读校验工具。它不依赖 Potccv 的 Python 包或其他本机工具；准备好声明的依赖后，可以从任意工作目录直接调用本目录的入口。仓库检查和工作区事项检查是两个独立命令，报告只输出到终端。
 
-工具的维护边界见 [AGENTS.md](AGENTS.md)。源码仓库的通用文档和测试约定见 [源码文档规则](../../rules/repo/docs/AGENTS.md)、[源码测试规则](../../rules/repo/testing/AGENTS.md) 和 [工作区测试规则](../../rules/workspace/testing/AGENTS.md)。
+工具的维护边界见 [AGENTS.md](AGENTS.md)。源码仓库的通用文档和测试约定见 [源码文档规则](../../rules/repo/docs.md)、[源码测试规则](../../rules/repo/testing.md) 和 [工作区测试规则](../../rules/workspace/testing/execution.md)。
 
 ## 环境与依赖
 
@@ -26,6 +26,10 @@ python -B tools/rule-check/rule_check.py --version
 ### 检查源码仓库规则
 
 `rules` 检查显式源码仓库中的 Git 跟踪 Markdown 链接、标题锚点、规则入口和公开配置示例，并报告被跟踪的私人路径。它读取当前工作树和必要的 Git 元数据，不读取真实个人 profile 内容，不检查外部网站。
+
+执行入口检查覆盖所有目录级 AGENTS.md、`rules/` 下除 README.md 外的 Markdown，以及 `profile/configuration.md`、`profile/fields.md`、`profile/maintenance.md`。这些文件必须从根 AGENTS.md 经分层目录入口与主题文档的执行链接可达，例如 `rules/AGENTS.md` 经 `repo/AGENTS.md` 进入源码主题、`profile/AGENTS.md` 进入配置主题、`tools/AGENTS.md` 进入工具专用约定。README 的链接仍会校验目标与锚点，但不传递执行可达性。`rules/scope.md` 与 `rules/maintenance.md` 是共享规则，其他详细规则仍归入 `rules/repo/` 或 `rules/workspace/`。
+
+`profile/` 公开文件仅包括 AGENTS.md、README.md、configuration.md、fields.md、maintenance.md 和 example.json；其他被跟踪路径仅报告路径，不读取内容。JSON 报告保留 `agents_files`、`agents_reachable` 和 `agents_unreachable`，分别统计和报告目录级 AGENTS；主题规则使用 `rule_files`、`rules_reachable` 和 `rule_unreachable`。
 
 ```powershell
 python -B tools/rule-check/rule_check.py rules <source-repo>

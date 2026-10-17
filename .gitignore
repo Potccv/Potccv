@@ -1,7 +1,10 @@
-# The profile directory publishes README, agent instructions, and an empty example only.
+# The profile directory publishes README, agent instructions, topic documents, and an empty example only.
 /profile/*
 !/profile/README.md
 !/profile/AGENTS.md
+!/profile/configuration.md
+!/profile/fields.md
+!/profile/maintenance.md
 !/profile/example.json
 
 # Optional personal configurations elsewhere in this repository.

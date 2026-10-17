@@ -33,11 +33,21 @@ class RepositoryTests(unittest.TestCase):
         self.root = Path(self.scratch.name) / "repo"
         self.root.mkdir()
         self.git("init", "--quiet")
-        self.write("AGENTS.md", "# Entry\n[profile](profile/AGENTS.md)\n[rules](rules/AGENTS.md)\n")
-        self.write("profile/AGENTS.md", "# Profile\n[example](example.json)\n")
-        self.write("rules/AGENTS.md", "# Rules\n[repo](repo/AGENTS.md)\n[workspace](workspace/AGENTS.md)\n")
-        self.write("rules/repo/AGENTS.md", "# Repo\n")
-        self.write("rules/workspace/AGENTS.md", "# Workspace\n")
+        self.write("AGENTS.md", "# Entry\n[profile](profile/AGENTS.md)\n[rules](rules/AGENTS.md)\n[tools](tools/AGENTS.md)\n")
+        self.write("profile/AGENTS.md", "# Profile entry\n[configuration](configuration.md)\n[fields](fields.md)\n[maintenance](maintenance.md)\n")
+        self.write("profile/configuration.md", "# Profile\n[example](example.json)\n")
+        self.write("profile/fields.md", "# Fields\n")
+        self.write("profile/maintenance.md", "# Maintenance\n")
+        self.write("rules/AGENTS.md", "# Rules entry\n[scope](scope.md)\n[maintenance](maintenance.md)\n[repo](repo/AGENTS.md)\n[workspace](workspace/AGENTS.md)\n")
+        self.write("rules/scope.md", "# Rules\n")
+        self.write("rules/maintenance.md", "# Rule maintenance\n")
+        self.write("rules/repo/AGENTS.md", "# Repo entry\n[coding](coding.md)\n")
+        self.write("rules/repo/coding.md", "# Repo\n")
+        self.write("rules/workspace/AGENTS.md", "# Workspace entry\n[layout](layout.md)\n")
+        self.write("rules/workspace/layout.md", "# Workspace\n")
+        self.write("tools/AGENTS.md", "# Tools entry\n[tool](rule-check/AGENTS.md)\n[usage](rule-check/README.md)\n")
+        self.write("tools/rule-check/AGENTS.md", "# Tool\n")
+        self.write("tools/rule-check/README.md", "# Tool usage\n")
         self.write("profile/example.json", json.dumps(example_profile()))
         self.git("add", ".")
 
@@ -55,11 +65,14 @@ class RepositoryTests(unittest.TestCase):
     def codes(self, result):
         return {issue.code for issue in result.issues}
 
-    def test_valid_repository_and_empty_legacy_directory(self):
+    def test_valid_hierarchical_entries_and_empty_legacy_directory(self):
         (self.root / "rules/old-layout").mkdir()
         result = check_repository(self.root)
         self.assertTrue(result.ok, result.issues)
-        self.assertEqual(result.stats["agents_reachable"], 5)
+        self.assertEqual(result.stats["agents_files"], 7)
+        self.assertEqual(result.stats["agents_reachable"], 7)
+        self.assertEqual(result.stats["rule_files"], 7)
+        self.assertEqual(result.stats["rules_reachable"], 7)
         self.assertEqual(result.stats["profile_examples_checked"], 1)
 
     def test_requires_actual_git_root(self):
@@ -121,13 +134,14 @@ class RepositoryTests(unittest.TestCase):
         self.assertFalse(result.ok)
 
     def test_root_relative_links_use_repository_root_and_check_missing_targets(self):
-        self.write("AGENTS.md", "# Entry\n[profile](/profile/AGENTS.md)\n[rules](/rules/AGENTS.md)\n")
-        self.write("rules/repo/AGENTS.md", "# Repo\n[root](/AGENTS.md#entry)\n")
+        self.write("AGENTS.md", "# Entry\n[profile](/profile/AGENTS.md)\n[rules](/rules/AGENTS.md)\n[tools](/tools/AGENTS.md)\n")
+        self.write("rules/repo/coding.md", "# Repo\n[root](/AGENTS.md#entry)\n")
         result = check_repository(self.root)
         self.assertTrue(result.ok, result.issues)
-        self.assertEqual(result.stats["agents_reachable"], 5)
+        self.assertEqual(result.stats["agents_reachable"], 7)
+        self.assertEqual(result.stats["rules_reachable"], 7)
         self.assertEqual(result.stats["skipped_outside_links"], 0)
-        self.write("rules/repo/AGENTS.md", "# Repo\n[missing](/missing.md)\n")
+        self.write("rules/repo/coding.md", "# Repo\n[missing](/missing.md)\n")
         result = check_repository(self.root)
         self.assertIn("link_missing", self.codes(result))
         self.assertEqual(result.stats["skipped_outside_links"], 0)
@@ -157,7 +171,11 @@ class RepositoryTests(unittest.TestCase):
         self.assertTrue(result.ok, result.issues)
 
     def test_private_tracked_paths_report_names_without_reading(self):
-        private_paths = {"profile/local.json", "profile/nested/notes.md", "config.local.json", ".env", ".env.production"}
+        private_paths = {
+            "profile/local.json", "profile/notes.md", "profile/nested/AGENTS.md",
+            "profile/nested/notes.md", "profile/nested/configuration.md", "profile/README.MD",
+            "config.local.json", ".env", ".env.production",
+        }
         for name in private_paths:
             self.write(name, "synthetic secret sentinel")
         self.write(".env.example", "synthetic generic example")
@@ -176,21 +194,50 @@ class RepositoryTests(unittest.TestCase):
         self.assertEqual({issue.path for issue in result.issues if issue.code == "private_tracked_path"}, private_paths)
         self.assertNotIn("synthetic secret sentinel", repr(result.issues))
 
-    def test_agents_reachability_uses_agents_links_only(self):
+    def test_rule_links_reach_topics_and_directory_agents(self):
+        self.write("rules/repo/topic.md", "# Topic\n[tool](../../tools/example/AGENTS.md)\n")
+        self.write("tools/example/AGENTS.md", "# Tool\n")
+        self.write("rules/repo/coding.md", "# Repo\n[topic](topic.md)\n")
+        self.git("add", ".")
+        result = check_repository(self.root)
+        self.assertTrue(result.ok, result.issues)
+        self.assertEqual(result.stats["agents_files"], 8)
+        self.assertEqual(result.stats["agents_reachable"], 8)
+        self.assertEqual(result.stats["rule_files"], 8)
+        self.assertEqual(result.stats["rules_reachable"], 8)
+
+    def test_readme_does_not_make_execution_rules_reachable(self):
         self.write("rules/repo/topic/AGENTS.md", "# Topic\n")
-        self.write("README.md", "[topic](rules/repo/topic/AGENTS.md)\n")
+        self.write("rules/repo/topic.md", "# Topic\n[directory rule](topic/AGENTS.md)\n")
+        self.write("rules/repo/README.md", "[topic](topic.md)\n")
+        self.write("rules/repo/coding.md", "# Repo\n[human navigation](README.md)\n")
         self.git("add", ".")
         result = check_repository(self.root)
         self.assertIn("agents_unreachable", self.codes(result))
-        self.write("rules/repo/AGENTS.md", "# Repo\n[topic](topic/AGENTS.md)\n")
+        self.assertEqual([issue.path for issue in result.issues if issue.code == "rule_unreachable"],
+                         ["rules/repo/topic.md"])
+        self.write("rules/repo/coding.md", "# Repo\n[topic](topic.md)\n")
         self.assertTrue(check_repository(self.root).ok)
 
     def test_rule_files_outside_two_scopes_are_errors(self):
         self.write("rules/legacy/AGENTS.md", "# Legacy\n")
+        self.write("rules/extra.md", "# Extra\n")
         self.write("rules/README.md", "# Human navigation\n")
         self.git("add", ".")
         result = check_repository(self.root)
-        self.assertEqual([issue.path for issue in result.issues if issue.code == "rule_location"], ["rules/legacy/AGENTS.md"])
+        self.assertEqual([issue.path for issue in result.issues if issue.code == "rule_location"],
+                         ["rules/extra.md", "rules/legacy/AGENTS.md"])
+
+    def test_public_profile_documents_are_checked_for_links_and_reachability(self):
+        self.write("profile/README.md", "# Human navigation\n[fields](fields.md)\n")
+        self.write("profile/AGENTS.md", "# Profile entry\n[configuration](configuration.md)\n[maintenance](maintenance.md)\n")
+        self.write("profile/fields.md", "# Fields\n[missing anchor](maintenance.md#absent)\n")
+        self.git("add", ".")
+        result = check_repository(self.root)
+        self.assertEqual([issue.path for issue in result.issues if issue.code == "rule_unreachable"],
+                         ["profile/fields.md"])
+        self.assertIn("anchor_missing", self.codes(result))
+        self.assertEqual(result.stats["private_tracked_paths"], 0)
 
     def test_profile_schema_types_and_empty_values(self):
         for field, update, expected in (

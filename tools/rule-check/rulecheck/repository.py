@@ -12,6 +12,12 @@ from .models import CheckResult
 from .paths import contains_redirect, is_redirect, is_within
 
 
+PUBLIC_PROFILE_PATHS = {
+    "profile/AGENTS.md", "profile/README.md", "profile/configuration.md", "profile/fields.md",
+    "profile/maintenance.md", "profile/example.json",
+}
+
+
 def _private_path(path: str) -> bool:
     relative = PurePosixPath(path)
     name = relative.name.casefold()
@@ -20,7 +26,7 @@ def _private_path(path: str) -> bool:
     if name == ".env" or (name.startswith(".env.") and name != ".env.example"):
         return True
     return bool(relative.parts and relative.parts[0].casefold() == "profile"
-                and path not in {"profile/README.md", "profile/AGENTS.md", "profile/example.json"})
+                and path not in PUBLIC_PROFILE_PATHS)
 
 
 def _markdown_path(path: str) -> bool:
@@ -109,7 +115,7 @@ def _check_example(repo: Path, tracked: set[str], result: CheckResult) -> None:
 
 
 def check_repository(repo: Path) -> CheckResult:
-    """Check tracked public Markdown, local links, AGENTS reachability and example JSON.
+    """Check tracked public Markdown, local links, rule reachability and example JSON.
 
     Git's index supplies names; contents always come from the working tree.
     No target is modified and no external URL is requested.
@@ -117,7 +123,8 @@ def check_repository(repo: Path) -> CheckResult:
     result = CheckResult(stats={key: 0 for key in (
         "tracked_paths", "markdown_files", "markdown_targets_read", "links", "local_links",
         "external_links", "skipped_outside_links", "skipped_redirects", "skipped_private_links",
-        "private_tracked_paths", "agents_files", "agents_reachable", "profile_examples_checked",
+        "private_tracked_paths", "agents_files", "agents_reachable", "rule_files",
+        "rules_reachable", "profile_examples_checked",
     )})
     raw_root = Path(os.path.abspath(repo))
     if is_redirect(raw_root) or contains_redirect(raw_root, Path(raw_root.anchor)):
@@ -143,7 +150,9 @@ def check_repository(repo: Path) -> CheckResult:
             continue
         public.add(relative)
         parts = PurePosixPath(relative).parts
-        if parts and parts[0] == "rules" and relative not in {"rules/AGENTS.md", "rules/README.md"}:
+        if parts and parts[0] == "rules" and relative not in {
+            "rules/AGENTS.md", "rules/README.md", "rules/scope.md", "rules/maintenance.md",
+        }:
             if len(parts) < 3 or parts[1] not in {"repo", "workspace"}:
                 result.add("rule_location", "Detailed rule files must be under rules/repo or rules/workspace.", relative)
 
@@ -171,7 +180,12 @@ def check_repository(repo: Path) -> CheckResult:
         read_document(relative)
     result.stats["markdown_files"] = len(markdown_names)
     agents = {path for path in markdown_names if PurePosixPath(path).name == "AGENTS.md"}
-    edges: dict[str, set[str]] = {path: set() for path in agents}
+    rules = {
+        path for path in markdown_names if PurePosixPath(path).name.casefold() != "readme.md"
+        and (PurePosixPath(path).parts[0] == "rules" or path in PUBLIC_PROFILE_PATHS)
+    } - agents
+    execution = agents | rules
+    edges: dict[str, set[str]] = {path: set() for path in execution}
     for source in markdown_names:
         document = documents.get(source)
         if document is None:
@@ -215,7 +229,7 @@ def check_repository(repo: Path) -> CheckResult:
             if lexical.is_file() and relative not in public:
                 result.add("link_untracked", f"Local file link target is not Git-tracked: {relative}", source, link.line)
                 continue
-            if source in agents and relative in agents and not link.image:
+            if source in execution and relative in execution and not link.image:
                 edges[source].add(relative)
             if url.fragment:
                 if _markdown_path(relative) and lexical.is_file():
@@ -235,8 +249,12 @@ def check_repository(repo: Path) -> CheckResult:
     if "AGENTS.md" not in agents:
         result.add("agents_root_missing", "The Git-tracked root AGENTS.md entry is required.", "AGENTS.md")
     for relative in sorted(agents - reachable):
-        result.add("agents_unreachable", "AGENTS.md is unreachable from the root AGENTS link graph.", relative)
+        result.add("agents_unreachable", "AGENTS.md is unreachable from the root execution-rule link graph.", relative)
+    for relative in sorted(rules - reachable):
+        result.add("rule_unreachable", "A rule document is unreachable from the root execution-rule link graph.", relative)
     result.stats["agents_files"] = len(agents)
-    result.stats["agents_reachable"] = len(reachable)
+    result.stats["agents_reachable"] = len(agents & reachable)
+    result.stats["rule_files"] = len(rules)
+    result.stats["rules_reachable"] = len(rules & reachable)
     _check_example(root, tracked, result)
     return result

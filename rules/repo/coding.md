@@ -1,6 +1,6 @@
-# AGENTS.md — 源码编程规范
+# 源码编程规范
 
-使用本资料编写或修改源码仓库中的源码时，遵循本文件、[根目录执行要求](../../../AGENTS.md)及[源码仓库规则](../AGENTS.md)。维护本目录文档时，同时遵循[文档范围与共同要求](../../AGENTS.md)。
+使用本资料编写或修改源码仓库中的源码时，遵循本文件及[源码仓库入口](AGENTS.md)。维护本文件时，同时遵循[共同写作与核对](../maintenance.md#共同写作与核对)。
 
 ## 编程基本原则
 
@@ -19,4 +19,4 @@
 - 修改前检查已有改动，保护用户当前工作。
 - 只修改当前任务相关内容，不顺带重构或升级无关依赖。
 
-测试源码与依赖遵循[源码测试要求](../testing/AGENTS.md)，验证执行遵循[测试执行与验证](../../workspace/testing/AGENTS.md)。编写仓库外的辅助工具时，遵循[本机开发工具](../../workspace/tools/AGENTS.md)；子智能体的启用、参数与调度见[子智能体协作](../../workspace/collaboration/AGENTS.md)。
+测试源码与依赖遵循[源码测试要求](testing.md)，验证执行遵循[测试执行与验证](../workspace/testing/execution.md)。编写仓库外的辅助工具时，遵循[本机开发工具](../workspace/tools.md)；子智能体的启用、参数与调度见[子智能体协作](../workspace/collaboration.md)。
