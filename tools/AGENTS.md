@@ -2,6 +2,6 @@
 
 本目录的工具从下表进入；通用执行要求见[根目录 AGENTS.md](../AGENTS.md)。
 
-| 工具 | 执行与维护入口 | 用途、依赖与运行方式 |
-|---|---|---|
-| rule-check | [工具专用约定](rule-check/AGENTS.md) | [使用说明](rule-check/README.md) |
+| 工具 | 适用任务与执行入口 |
+|---|---|
+| rule-check | 使用或维护只读规则与事项校验工具时，进入[工具专用约定](rule-check/AGENTS.md) |

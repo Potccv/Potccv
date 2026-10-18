@@ -10,10 +10,6 @@
 | 外部项目源码的本地准备和阅读 | [参考项目源码](references.md) |
 | 本机开发说明、资料存放和状态记录 | [工作区开发文档](docs.md) |
 | 事项执行入口 | [事项入口](tasks/AGENTS.md) |
-| 事项拆分、领取、验收和状态迁移 | [事项管理](tasks/management.md) |
-| 事项命名、正文、时间与模板 | [事项格式](tasks/format.md) |
 | 测试执行入口 | [测试入口](testing/AGENTS.md) |
-| 测试执行、临时目录与清理 | [测试执行与临时目录](testing/execution.md) |
-| 规则变更的行为核对场景 | [约束行为回归](testing/regressions.md) |
 | 本机辅助工具的组织和依赖 | [本机开发工具](tools.md) |
 | 子智能体启用、复用和调度 | [子智能体协作](collaboration.md) |
