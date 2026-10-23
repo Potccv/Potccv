@@ -69,8 +69,8 @@ def _check_example(repo: Path, tracked: set[str], result: CheckResult) -> None:
         "credentials": {"file": str, "values": dict},
         "preferences": {
             "auto_commit_and_push": bool,
-            "release": {"create_after_change": bool, "auto_push": bool, "retain_count": int},
-            "subagents": {"count": int, "model": str, "reasoning_effort": str},
+            "release": {"create_after_change": bool, "auto_push": bool},
+            "subagents": {"model": str, "reasoning_effort": str},
         },
         **{key: dict for key in ("hosts", "devices", "services", "contacts", "project_locations")},
     }
@@ -99,12 +99,6 @@ def _check_example(repo: Path, tracked: set[str], result: CheckResult) -> None:
         elif field == "preferences.release.auto_push":
             if value:
                 result.add("profile_example_default", "The public example must default release push to false.", relative)
-        elif field == "preferences.release.retain_count":
-            if value < 1:
-                result.add("profile_example_default", "The release retention count must be a positive integer.", relative)
-        elif field == "preferences.subagents.count":
-            if value < 1:
-                result.add("profile_example_default", "The subagent count must be a positive integer.", relative)
         elif field in {"preferences.subagents.model", "preferences.subagents.reasoning_effort"}:
             if not value.strip():
                 result.add("profile_example_default", f"The generic default at {field} must be nonempty.", relative)

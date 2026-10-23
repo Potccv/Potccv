@@ -17,11 +17,9 @@
     "auto_commit_and_push": false,
     "release": {
       "create_after_change": true,
-      "auto_push": false,
-      "retain_count": 3
+      "auto_push": false
     },
     "subagents": {
-      "count": 3,
       "model": "gpt-6.1-sol",
       "reasoning_effort": "high"
     }

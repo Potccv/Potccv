@@ -19,8 +19,8 @@ def example_profile():
         "credentials": {"file": "", "values": {}},
         "preferences": {
             "auto_commit_and_push": False,
-            "release": {"create_after_change": True, "auto_push": False, "retain_count": 3},
-            "subagents": {"count": 3, "model": "gpt-6.1-sol", "reasoning_effort": "high"},
+            "release": {"create_after_change": True, "auto_push": False},
+            "subagents": {"model": "gpt-6.1-sol", "reasoning_effort": "high"},
         },
         **{key: {} for key in ("hosts", "devices", "services", "contacts", "project_locations")},
     }
@@ -245,10 +245,8 @@ class RepositoryTests(unittest.TestCase):
             ("missing", lambda value: value.pop("identity"), "profile_example_schema"),
             ("personal", lambda value: value["identity"].update(display_name="synthetic private sentinel"), "profile_example_not_empty"),
             ("dict", lambda value: value["credentials"].update(values={"synthetic": "sentinel"}), "profile_example_not_empty"),
-            ("count", lambda value: value["preferences"]["subagents"].update(count=0), "profile_example_default"),
             ("release_create", lambda value: value["preferences"]["release"].update(create_after_change=False), "profile_example_default"),
             ("release_push", lambda value: value["preferences"]["release"].update(auto_push=True), "profile_example_default"),
-            ("release_retention", lambda value: value["preferences"]["release"].update(retain_count=0), "profile_example_default"),
         ):
             with self.subTest(field=field):
                 value = example_profile()
