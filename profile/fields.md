@@ -14,7 +14,7 @@
 | `preferences` | 提交、发布偏好与子智能体默认参数 |
 | `preferences.auto_commit_and_push` | 修改完成后是否自动提交并推送至 GitHub；布尔值，默认 `false`，缺失时按 `false` 处理，执行规则见[版本与授权](../rules/repo/git/release.md#版本与授权) |
 | `preferences.release` | 发布收尾偏好：`create_after_change` 默认 `true`，表示会话中截至当前已布置的任务全部完成后统一打包，`false` 关闭自动打包；`auto_push` 为独立于 `auto_commit_and_push` 的 release 推送偏好，默认 `false`，推送授权见[版本与授权](../rules/repo/git/release.md#版本与授权)。发布包位置、固定保留三版与清理方式见[发布整理与工作区发布目录](../rules/repo/git/release.md#发布整理与工作区发布目录) |
-| `preferences.subagents` | 子智能体模型参数：`model`、`reasoning_effort` 分别为启用子智能体时采用的模型标识与推理强度；缺失字段采用[配置示例](example.json)中的相应默认值。是否启用、数量和调度时机由 AI 按[子智能体协作](../rules/workspace/collaboration.md)自行判断 |
+| `preferences.subagents` | 子智能体模型参数：`model`、`reasoning_effort` 分别为启用子智能体时采用的模型标识与推理强度；缺失字段采用[配置示例](example.json)中的相应默认值。启用条件、数量和调度时机遵循[子智能体协作](../rules/workspace/collaboration.md) |
 | `hosts`、`devices`、`services` | 设备地址、服务入口、连接方式及设备允许操作的范围，可附最后核验日期 |
 | `contacts` | 消息任务需要的联系人标识 |
 | `project_locations` | 项目工作区与资料目录的定位路径，仅作入口索引，不承载完整项目资料；工作区资料位置遵循[工作区资料存放位置](../rules/workspace/docs.md#资料存放位置) |
