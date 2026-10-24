@@ -12,4 +12,3 @@ Potccv 整理了 AI 协作时会用到的开发、Git、文档和个人配置资
 | [通用约定](rules/README.md) | 范围判定、共同维护要求及分类导航 |
 | [个人配置](profile/README.md) | 配置模板及其使用规范的导读 |
 | [规则校验工具](tools/rule-check/README.md) | 只读检查源码仓库规则和工作区事项 |
-| [Git 提交验证工具](tools/git-submit/README.md) | 签名提交、推送及远端分支和 GitHub 签名验证 |
