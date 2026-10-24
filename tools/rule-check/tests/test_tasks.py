@@ -12,11 +12,9 @@ def task_text(status="todo", creation="2026-10-01 12:00:00", update="2026-10-02 
     text = (
         "# 独立事项\n\n状态：" + status + "\n\n"
         "摘要：完成独立事项的验证。\n\n"
-        "## 目标\n预期结果。\n\n## 变更边界\n仅包含本事项结果。\n\n"
-        "## 拆分依据\n可独立验收：是；可独立迁移：是；失败时其他事项仍有价值：是。\n\n"
-        "## 工作清单\n- [ ] 实施步骤。\n\n"
-        "## 验收条件\n可核验标准。\n\n## 当前进展与接续\n当前进展。\n\n"
-        "## 关联资料\n相关资料。\n\n"
+        "模块：事项检查\n\n"
+        "## 工作清单\n- [ ] tasks.py：负责事项结构检查；核对目标摘要和必要章节。\n\n"
+        "## 当前进展与接续\n当前进展。\n\n"
     )
     if reason is not None:
         text += f"终止原因：{reason}\n\n"
@@ -71,6 +69,23 @@ class TaskChecks(unittest.TestCase):
         result = self.check()
         self.assertTrue(result.ok, result.issues)
         self.assertEqual(result.stats["task_files"], 1)
+
+    def test_optional_interfaces_and_historical_sections_are_read_only(self):
+        interfaces = "## 接口约定\n- 调用：复用 Markdown 解析器的公开入口。\n- 对外：沿用检查结果和错误代码。\n\n"
+        self.write(self.todo, text=task_text().replace("## 工作清单", interfaces + "## 工作清单"))
+        historical = task_text("done", completion="2026-10-02 12:00:00").replace("模块：事项检查\n\n", "")
+        historical = historical.replace("## 工作清单", "## 变更边界\n保留原范围。\n\n## 验收条件\n保留原完成标准。\n\n## 工作清单")
+        self.write(self.done, "T002-历史事项.md", historical)
+        before = self.snapshot()
+        result = self.check()
+        self.assertTrue(result.ok, result.issues)
+        self.assertEqual(self.snapshot(), before)
+
+    def test_work_checklist_and_progress_sections_remain_required(self):
+        for section in ("工作清单", "当前进展与接续"):
+            with self.subTest(section=section):
+                self.write(self.todo, text=task_text().replace(f"## {section}", f"### {section}"))
+                self.assertIn("tasks.section", self.codes(self.check()))
 
     def test_doing_rejects_completion_or_termination(self):
         self.write(self.doing, text=task_text("doing", completion="2026-10-02 12:00:00", termination="2026-10-02 12:00:00"))

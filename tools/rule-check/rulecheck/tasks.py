@@ -20,7 +20,7 @@ from .paths import is_redirect, is_within
 _TASK_NAME = re.compile(r"^(?P<id>(?:[A-Za-z][A-Za-z0-9]*?-?\d+|\d+))[-－—_ ]+(?P<name>.+)$")
 _METADATA = re.compile(r"^(状态|摘要|创建时间|最后更新时间|完成时间|终止时间|终止原因)\s*[：:]\s*(.*?)\s*$")
 _DATE = re.compile(r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$")
-_SECTIONS = ("变更边界", "工作清单", "验收条件", "当前进展与接续")
+_SECTIONS = ("工作清单", "当前进展与接续")
 _STATES = ("todo", "doing", "done", "drop")
 _SUMMARY_LIMIT = 120
 _LEGACY_STATE_NAMES = {
